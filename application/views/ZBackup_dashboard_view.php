@@ -18,7 +18,7 @@
 							<div class="box-title">
 								<h3>
 									<i class="icon-bar-chart"></i>
-									การจัดสรรงบแยกตามแผนงาน
+									สัดส่วนการจัดสรรงบตามแผนงาน
 								</h3>
 							</div>
 							<div class="box-content">
@@ -34,7 +34,7 @@
 							<div class="box-title">
 								<h3>
 									<i class="icon-bar-chart"></i>
-									มูลค่าการเบิกจ่ายในหนึ่งปีงบประมาณแยกตามเดือน
+									จำนวนการอนุมัติและการเบิกจ่าย
 								</h3>
 							</div>
 							<div class="box-content">
@@ -50,7 +50,7 @@
 							<div class="box-title">
 								<h3>
 									<i class="icon-bar-chart"></i>
-									จำนวนเงินอนุมัติแต่ยังไม่เบิกจ่าย
+									สัดส่วนการอนุมัติแยกตามแผนงาน
 								</h3>
 							</div>
 							<div class="box-content">
@@ -79,7 +79,7 @@
 							<div class="box-title">
 								<h3>
 									<i class="icon-bar-chart"></i>
-									สัดส่วนการการเบิกจ่ายแยกตามงบรายจ่าย
+									สัดส่วนการอนุมัติแยกตามงบรายจ่าย
 								</h3>
 							</div>
 							<div class="box-content">
@@ -122,12 +122,15 @@ var pie_data5 = <?php echo json_encode($arr_pie5); ?>
 
 var pie_data6 = <?php echo json_encode($arr_pie6); ?>
 
+
 /* Bar Chart Data */  
-var d1_1 = [<?php echo $arr_bar_data; ?>];
+    var d1_1 = [<?php echo $arr_bar_data1; ?>];
+ 
+    var d1_2 = [<?php echo $arr_bar_data2; ?>];
 
 
 $(document).ready(function () {
- // console.log(d1_1);
+  console.log(d1_1);
   /* Pie Chart */   
   $.plot($("#flot-1"), pie_data1, {
         series: {
@@ -206,7 +209,7 @@ $(document).ready(function () {
     }
    });
    
-   
+    /*
    $.plot($("#flot-5"), pie_data5, {
     series: {
         pie: {
@@ -225,7 +228,7 @@ $(document).ready(function () {
         }
     }
    });
-  
+   
    $.plot($("#flot-6"), pie_data6, {
     series: {
         pie: {
@@ -244,54 +247,67 @@ $(document).ready(function () {
         }
     }
    });
-  
+  */
   /* Bar Chart Data */  
-    var data1 = [
+   /* var data1 = [
         {
-            label: "การเบิกจ่าย",
+            label: "การอนุมัติ",
             data: d1_1,
             bars: {
                 show: true,
-                align: "center",
-                barWidth: 12*24*50*40*300,
+                barWidth: 12*24*60*60*300,
                 fill: true,
                 lineWidth: 1,
                 order: 1,
-               
+                fillColor:  "#AA4643"
             },
             color: "#AA4643"
+        },
+        {
+            label: "การเบิกจ่าย",
+            data: d1_2,
+            bars: {
+                show: true,
+                barWidth: 12*24*60*60*300,
+                fill: true,
+                lineWidth: 1,
+                order: 2,
+                fillColor:  "#89A54E"
+            },
+            color: "#89A54E"
         }
         
     ];
  
- $.plot($("#placeholder"), data1, {
+ 
+    $.plot($("#placeholder"), data1, {
         xaxis: {
-            min: (new Date(<?php  echo $this->session->userdata('budget_year_year') - 1; ?>, 09, 01)).getTime(),
-            max: (new Date(<?php  echo $this->session->userdata('budget_year_year'); ?>, 08, 30)).getTime(),
+            min: (new Date(<?php // echo $this->session->userdata('budget_year_year') - 1; ?>, 09, 01)).getTime(),
+            max: (new Date(<?php // echo $this->session->userdata('budget_year_year'); ?>, 08, 30)).getTime(),
             mode: "time",
             timeformat: "%b",
             tickSize: [1, "month"],
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             tickLength: 0, // hide gridlines
-            axisLabel: 'เดือน (หนึ่งปีงบประมาณ)',
+            axisLabel: 'Month',
             axisLabelUseCanvas: true,
             axisLabelFontSizePixels: 12,
             axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
             axisLabelPadding: 5
         },
-            yaxis: {
-            axisLabel: 'จำนวนเงิน',
+        yaxis: {
+            axisLabel: 'Value',
             axisLabelUseCanvas: true,
             axisLabelFontSizePixels: 12,
             axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
-            axisLabelPadding: 1
-            },
+            axisLabelPadding: 5
+        },
         grid: {
-                hoverable: true,
-                clickable: false,
-                borderWidth: 1
+            hoverable: true,
+            clickable: false,
+            borderWidth: 1
         }
-        });
+    });
     
     
    

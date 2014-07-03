@@ -14,8 +14,8 @@ class Approve extends CI_Controller {
 	
 	public function index()
 	{
-		$data["title"] = "รายการขออนุมัติงบประมาณ";
-		$data["path"] = array("งานการเงิน","ขออนุมัติใช้งบประมาณ","จัดการรายการขออนุมัติงบประมาณ");
+		$data["title"] = "รายการเอกสารต้นเรื่อง";
+		$data["path"] = array("งานการเงิน","จัดการเอกสารต้นเรื่อง","รายการเอกสารต้นเรื่อง");
 		$data["submenu"] = Finance_menu(1);
 		$this->template->load('template', 'approve_view', $data);
 	}
@@ -38,10 +38,10 @@ class Approve extends CI_Controller {
 		 $result['total'] = $this->approve_model->num_page($where);
 		 $result['rows'] = $this->approve_model->list_page($where);
 		
-		header('Content-type: application/json');
-        echo json_encode($result);
+		 header('Content-type: application/json');
+         echo json_encode($result);
 		 
-		// dump($result);
+		 //dump($result);
 	    // $this->output->enable_profiler(TRUE);
 	}
 	
@@ -99,6 +99,15 @@ class Approve extends CI_Controller {
       //   dump($data);
        //    $this->output->enable_profiler(TRUE);
 	}
+    
+    public function check_document_by_id($approve_id)
+	{  
+        $data = $this->approve_model->approve_check_by_id($approve_id);
+        
+        header('Content-type: application/json');
+        echo json_encode($data);     
+        
+	}
 	
 	public function combobox()
 	{
@@ -120,41 +129,33 @@ class Approve extends CI_Controller {
             'detail' => $_REQUEST['detail'],
             'budget_main_id' => $this->session->userdata('budget_year_id'),
             'amount' => $_REQUEST['amount']);
-		print_r($data);
-	
-      /* 
+		//print_r($data);
         		
        $id = $this->approve_model->save($data);
 	   
 	   if(isset($id)){
-	   	  echo json_encode(array('success'=>true));
+           echo json_encode(array('success'=>true,'row_id'=>$id));
 	   }
 	   else {
 		   echo json_encode(array('msg'=>'Some errors occured.'));
-	   }*/
+	   }
 	 
 	}
 	
 	public function update($eid)
 	{
 	  if(isset($eid)){
-		$data = array(
-	        'doc_number' => $_REQUEST['doc_number'],
-	        'file_number' => $_REQUEST['file_number'],
-            'doc_date' => formatDateToMySql($_REQUEST['doc_date']),
-            'faculty_code' => $_REQUEST['ccfaculty'],
-            'department_id' => $_REQUEST['ccdepartment'],
-            'division_id' => $_REQUEST['ccdivision'],
-            'subject' => $_REQUEST['subject'],
-            'detail' => $_REQUEST['detail'],
-            'budget_main_id' => $_REQUEST['ccbudget'],
-            'mgt_plans_id' => $_REQUEST['ccplans'],
-            'mgt_product_id' => $_REQUEST['ccproduct'],
-            'mgt_costs_id' => $_REQUEST['cccosts'],
-            'project_id' => $_REQUEST['ccproject'],
-            'activity_id' => $_REQUEST['ccactivity'],
-            'amount' => $_REQUEST['amount'],
-            'status' => 1);
+          $data = array(
+              'doc_number' => $_REQUEST['doc_number'],
+              'file_number' => $_REQUEST['file_number'],
+              'doc_date' => formatDateToMySql($_REQUEST['doc_date']),
+              'faculty_code' => $_REQUEST['ccfaculty'],
+              'department_id' => $_REQUEST['ccdepartment'],
+              'division_id' => $_REQUEST['ccdivision'],
+              'subject' => $_REQUEST['subject'],
+              'detail' => $_REQUEST['detail'],
+              'budget_main_id' => $this->session->userdata('budget_year_id'),
+              'amount' => $_REQUEST['amount']);
 		//print_r($_REQUEST);
 			
 	        $id = $this->approve_model->save($data,$eid);

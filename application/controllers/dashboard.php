@@ -25,8 +25,7 @@ class Dashboard extends CI_Controller {
 		$data["arr_pie5"] = $this->get_pie5($budget_id);
 		$data["arr_pie6"] = $this->get_pie6($budget_id);
 		
-		$data["arr_bar_data1"] = $this->get_approve_barchart($budget_id);
-		$data["arr_bar_data2"] = $this->get_payment_barchart($budget_id);
+		$data["arr_bar_data"] = $this->get_payment_barchart($budget_id);
 		
 		$this->template->load('template', 'dashboard_view',$data);
 	}
@@ -38,13 +37,13 @@ class Dashboard extends CI_Controller {
 		$useable = $data[0]["payment"];
 		$balance = $data[0]["budget"]-$data[0]["payment"];
 		
-		$arr = array(array("label" => "ไม่ใช้",  "data" => $balance, "color" => "#4572A7"),
-		             array("label" => "ใช้",  "data" => $useable, "color" => "#AA4643"));
+		$arr = array(array("label" => "ไม่ใช้ (" . number_format($balance) ." บ.)",  "data" => $balance, "color" => "#4572A7"),
+		             array("label" => "ใช้ (" . number_format($useable) ." บ.)" ,  "data" => $useable, "color" => "#AA4643"));
 		
 		return $arr;
 		
 		//dump($arr);
-	    //$this->output->enable_profiler(TRUE);
+	   // $this->output->enable_profiler(TRUE);
 	    
 	}
 	
@@ -56,38 +55,45 @@ class Dashboard extends CI_Controller {
 		$arr = array();
 		$sum = 0.00;
 		foreach ($data as $key => $value) {
-			$arr[] = array("label" => $value["name"],  "data" => $value["amount"]);
+			$arr[] = array("label" => $value["name"] ."(" . number_format($value["amount"]) ." บ.)",  "data" => $value["amount"]);
 			$sum +=  $value["amount"];
 		}
 		
 		$sum = $this->session->userdata('budget_year_amount') - $sum;
-	    $arr[] = array("label" => "ไม่ได้จัดสรร",  "data" => $sum);
+	    $arr[] = array("label" => "ไม่ได้จัดสรร (" . number_format($sum) ." บ.)",  "data" => $sum);
 		
 		return $arr;
 		
-	//	dump($arr);
+		//dump($arr);
 	    //$this->output->enable_profiler(TRUE);
 	    
 	}
 	
 	public function get_pie3($budget_main_id)
 	{
-		$data = $this->dashboard_model->approve_plans_chart($budget_main_id);
+		$data = $this->dashboard_model->approve_nopayment_chart($budget_main_id);
 		
-		$arr = array();
-		if (count($data) > 0) {
-			foreach ($data as $key => $value) {
-			   $arr[] = array("label" => $value["name"],  "data" => $value["amount"]);
-		   }
+        $arr = array();
+		$sum_no_approve = 0.00;
+        $sum_pay = 0.00;
+        
+		foreach ($data as $key => $value) {
+			  
+            if($value["payment"] == 0){
+                $sum_no_approve +=  $value["amount"];
+            }
+			$sum_pay +=  $value["payment"];
 		}
-		else {
-			  $arr[] = array("label" => "ไม่มีการอนุมัติ",  "data" => 100, "color" => "#4572A7");
-		}
-		
+        
+        $balance = ($this->session->userdata('budget_year_amount') - $sum_pay) - $sum_no_approve;
+    
+		$arr = array(array("label" => "จำนวนเงินคงเหลือ (" . number_format($balance) ." บ.)",  "data" => $balance, "color" => "#4572A7"),
+		             array("label" => "จำนวนเงินอนุมัติแต่ยังไม่เบิกจ่าย (" . number_format($sum_no_approve) ." บ.)",  "data" => $sum_no_approve, "color" => "#AA4643"));
+        
 		return $arr;
 		
-		//dump($data);
-	   // $this->output->enable_profiler(TRUE);
+		//dump($arr);
+	  //  $this->output->enable_profiler(TRUE);
 	    
 	}
 	
@@ -98,7 +104,7 @@ class Dashboard extends CI_Controller {
 		$arr = array();
 		if (count($data) > 0) {
 			foreach ($data as $key => $value) {
-			   $arr[] = array("label" => $value["name"],  "data" => $value["amount"]);
+                $arr[] = array("label" => $value["name"]."(" . number_format($value["amount"]) ." บ.)",  "data" => $value["amount"]);
 		   }
 		}
 		else {
@@ -107,19 +113,19 @@ class Dashboard extends CI_Controller {
 		
 		return $arr;
 	
-		//dump($data);
-	   //$this->output->enable_profiler(TRUE);
+	//	dump($data);
+	 //  $this->output->enable_profiler(TRUE);
 	    
 	}
 	
 	public function get_pie5($budget_main_id)
 	{
-		$data = $this->dashboard_model->approve_costs_chart($budget_main_id);
+		$data = $this->dashboard_model->payment_costs_chart($budget_main_id);
 		
 		$arr = array();
 		if (count($data) > 0) {
 			foreach ($data as $key => $value) {
-			   $arr[] = array("label" => $value["name"],  "data" => $value["amount"]);
+                $arr[] = array("label" => $value["name"] ."(" . number_format($value["amount"]) ." บ.)",  "data" => $value["amount"]);
 		   }
 		}
 		else {
@@ -127,20 +133,20 @@ class Dashboard extends CI_Controller {
 		}
 		
 		return $arr;
-		
-		//dump($arr);
+	
+		//dump($data);
 	   // $this->output->enable_profiler(TRUE);
 	    
 	}
 	
 	public function get_pie6($budget_main_id)
 	{
-		$data = $this->dashboard_model->payment_costs_chart($budget_main_id);
+		$data = $this->dashboard_model->payment_coststype_chart($budget_main_id);
 		
 	    $arr = array();
 		if (count($data) > 0) {
 			foreach ($data as $key => $value) {
-			   $arr[] = array("label" => $value["name"],  "data" => $value["amount"]);
+                $arr[] = array("label" => $value["name"] ."(" . number_format($value["amount"]) ." บ.)",  "data" => $value["amount"]);
 		   }
 		}
 		else {
@@ -150,35 +156,11 @@ class Dashboard extends CI_Controller {
 		return $arr;
 		
 		//dump($data);
-	    //$this->output->enable_profiler(TRUE);
-	    
-	}
-	
-	public function get_approve_barchart($budget_main_id)
-	{
-		$data = $this->dashboard_model->approve_bar_chart($budget_main_id);
-		
-		$str = "";
-		if (count($data) > 0) {
-			foreach ($data as $key => $value) {
-				$timespan = strtotime($value["doc_date"])."000";
-			    
-			    if($key == 0){
-			        $str .= "[".$timespan.",".$value["total"]."]";
-			    }
-				else {
-					$str .= ",[".$timespan.",".$value["total"]."]";
-				}
-		   }
-		}
-		
-		return $str;
-	
-		//dump($arr);
 	   // $this->output->enable_profiler(TRUE);
 	    
 	}
 	
+
 	public function get_payment_barchart($budget_main_id)
 	{
 		$data = $this->dashboard_model->payment_bar_chart($budget_main_id);
@@ -199,7 +181,7 @@ class Dashboard extends CI_Controller {
 
 		return $str;
 	   
-		//dump($data);
+		//dump($str);
 	   // $this->output->enable_profiler(TRUE);
 	    
 	}

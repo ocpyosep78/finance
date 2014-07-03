@@ -15,26 +15,15 @@ class Approve_model extends MY_Model{
 	
 	public function list_page($budget_main_ID) {
 		
-		$this->db->select('trn_approve.id, trn_approve.doc_number, trn_approve.file_number, trn_approve.subject, trn_approve.detail, trn_approve.status');
-		$this->db->select('trn_approve.faculty_code, trn_approve.department_id, trn_approve.division_id, trn_approve.project_id, trn_approve.activity_id');
-		$this->db->select('trn_approve.budget_main_id, trn_approve.mgt_plans_id, trn_approve.mgt_product_id, trn_approve.mgt_costs_id, trn_mgt_product.product_id');
-			
-		$this->db->select('IF(trn_approve.status = 1, trn_approve.amount, SUM(trn_payment.amount)) AS amount',FALSE);
+		$this->db->select('trn_approve.id, trn_approve.doc_number, trn_approve.file_number, trn_approve.subject, trn_approve.detail, trn_approve.amount');
+		$this->db->select('trn_approve.faculty_code, trn_approve.department_id, trn_approve.division_id');
+        
+        $this->db->select("IF(trn_approve.division_id = 0, mst_department.name, CONCAT(mst_department.name,' / ', mst_division.name)) AS department",FALSE);
 		
-		$this->db->select('mst_costs.name AS costs, mst_costs_type.name AS coststype, mst_costs_lists.name AS costslists');
-		$this->db->select("CONCAT(DATE_FORMAT(trn_approve.doc_date, '%d'),'/',DATE_FORMAT(trn_approve.doc_date, '%m'),'/',DATE_FORMAT(trn_approve.doc_date, '%Y' ) +543) AS doc_date", FALSE);
-		
-		$this->db->join('trn_disbursement','trn_disbursement.approve_id = trn_approve.id','LEFT OUTER');
-		$this->db->join('trn_payment', 'trn_payment.disbursement_id = trn_disbursement.id','LEFT OUTER');
-			
-		$this->db->join('trn_mgt_costs','trn_mgt_costs.id = trn_approve.mgt_costs_id');
-		$this->db->join('trn_mgt_product','trn_mgt_product.id = trn_approve.mgt_product_id');
-		$this->db->join('trn_mgt_plans','trn_mgt_plans.id = trn_approve.mgt_plans_id');
-		$this->db->join('trn_budget_main', 'trn_budget_main.id = trn_approve.budget_main_id');
-		
-		$this->db->join('mst_costs', 'mst_costs.id = trn_mgt_costs.costs_id');
-		$this->db->join('mst_costs_type', 'mst_costs_type.id = trn_mgt_costs.costs_type_id');
-		$this->db->join('mst_costs_lists', 'mst_costs_lists.id = trn_mgt_costs.costs_lists_id');
+        $this->db->select("CONCAT(DATE_FORMAT(trn_approve.doc_date, '%d'),'/',DATE_FORMAT(trn_approve.doc_date, '%m'),'/',DATE_FORMAT(trn_approve.doc_date, '%Y' ) +543) AS doc_date", FALSE);
+					
+		$this->db->join('mst_department', 'mst_department.id = trn_approve.department_id','LEFT OUTER');
+		$this->db->join('mst_division', 'mst_division.id = trn_approve.division_id','LEFT OUTER');
 		
 		if(!empty($budget_main_ID))
 		    $this->db->where('trn_approve.budget_main_id =', $budget_main_ID);
@@ -145,6 +134,13 @@ class Approve_model extends MY_Model{
         $this->db->where('trn_approve.doc_number =', $document_number);
         $this->db->where('trn_approve.budget_main_id =', $budget_main_ID);
         
+		return $this->get();
+	}
+    
+    function approve_check_by_id($approve_id)
+	{
+        $this->db->select('trn_approve.doc_number, trn_approve.subject ,trn_approve.amount');
+        $this->db->where('trn_approve.id =', $approve_id);   
 		return $this->get();
 	}
     

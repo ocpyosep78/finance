@@ -13,20 +13,21 @@
 				<thead>
 					<tr>
 						<th data-options="field:'doc_date',width:100" sortable="true">วันที่เบิกจ่าย</th>
-						<th data-options="field:'doc_number',width:120" sortable="true">เลขที่เอกสาร</th>
-						<th data-options="field:'file_number',width:70" sortable="true">ลำดับแฟ้ม</th>
-						<th data-options="field:'subject',width:280" sortable="true">เรื่อง</th>
-						<th data-options="field:'department',width:180" sortable="true">ภาควิชา</th>
-						<th data-options="field:'costs',width:120" sortable="true">งบรายจ่าย</th>
+						<th data-options="field:'doc_number',width:90" sortable="true">เลขที่ มอ.</th>
+						<th data-options="field:'file_number',width:45" sortable="true">ลำดับ</th>
+						<th data-options="field:'subject',width:150" sortable="true">เรื่อง</th>
+                        <th data-options="field:'plan',width:170" sortable="true">แผนงาน</th>
+                        <th data-options="field:'product',width:120" sortable="true">งาน</th>
+						<th data-options="field:'costs',width:100" sortable="true">งบรายจ่าย</th>
 						<th data-options="field:'coststype',width:100" sortable="true">ประเภท</th>
-						<th data-options="field:'costsname',width:220" sortable="true">รายการจ่าย</th>
-						<th data-options="field:'total_amount',width:150,align:'right'" formatter="formatCurrency" sortable="true">จำนวนเงิน</th>
+						<th data-options="field:'costsname',width:300" sortable="true">รายการจ่าย</th>
+						<th data-options="field:'total_amount',width:120,align:'right'" formatter="formatCurrency" sortable="true">จำนวนเงิน</th>
 					</tr>
 				</thead>	
 			</table>
 			<?php if($this->session->userdata('Role') == 'Administrator' || $this->session->userdata('Role') == 'Finance'): ?>
 			<div id="toolbar">
-			 <a href="#" class="easyui-linkbutton" iconCls="icons-undo" plain="true" onclick="add()">เลือกเอกสารอนุมัติ</a>
+             <a href="#" class="easyui-linkbutton" iconCls="icons-add" plain="true" onclick="add()">เพิ่ม</a>
 		     <a href="#" class="easyui-linkbutton" iconCls="icons-edit" plain="true" onclick="edit()">แก้ไข</a>  
 		     <a href="#" class="easyui-linkbutton" iconCls="icons-remove" plain="true" onclick="del()">ลบ</a>  
 		    </div>
@@ -39,7 +40,7 @@
 	    var base_url = '<?php echo base_url(); ?>';
 		var url;
 		function add(){
-			url = base_url+'approve/';
+		    url = base_url + 'disbursement/form';
 			window.location.href = url;
 		}
 		function edit(){

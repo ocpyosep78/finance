@@ -35,10 +35,10 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="<?php echo base_url();?>approve">ขออนุมัติใช้งบประมาณ</a>
+							<a href="<?php echo base_url();?>approve">จัดการเอกสารต้นเรื่อง</a>
 						</li>
 						<li>
-							<a href="<?php echo base_url();?>disbursement">เบิกจ่ายงบประมาณ</a>
+							<a href="<?php echo base_url();?>disbursement/form">เบิกจ่ายงบประมาณ</a>
 						</li>
 						<li>
 							<a href="#">รายงาน</a>

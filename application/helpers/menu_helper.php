@@ -19,9 +19,9 @@ function Plans_menu($id)
 function Finance_menu($id)
 {
 	switch ($id) {
-		case '1': $submenu = array("approve" => "รายการขออนุมัติงบประมาณ","report_approve" => "ภาพรวมการขออนุมัติ");
+		case '1': $submenu = array("approve" => "รายการเอกสารต้นเรื่อง","report_approve" => "ภาพรวมการขออนุมัติ");
 		   break;
-		case '2': $submenu = array("disbursement" => "รายการเบิกจ่ายงบประมาณ");
+		case '2': $submenu = array("disbursement/form" => "เพิ่มข้อมูลเบิกจ่าย","disbursement" => "แสดงรายการเบิกจ่ายทั้งหมด");
 		   break;
 		case '3': $submenu = array("approve_report" => "สถิติการขออนุมัติ", "approve_report" => "สถิติการเบิกจ่าย");
 		   break;

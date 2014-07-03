@@ -6,26 +6,27 @@ class Disbursement extends CI_Controller {
 		$this->load->model('disbursement_model');
 		$this->load->model('payment_model');
 		$this->load->model('approve_model');
+        $this->load->helper('general');
 		$this->load->helper('myfunction');
 		$this->load->helper('menu');
 	}
 	
 	public function index()
 	{
-		$data["title"] = "รายการเบิกจ่ายงบประมาณ";
-		$data["path"] = array("งานการเงิน","เบิกจ่ายงบประมาณ","จัดการรายการเบิกจ่ายงบประมาณ");
+		$data["title"] = "รายการเบิกจ่ายทั้งหมด";
+		$data["path"] = array("งานการเงิน","เบิกจ่ายงบประมาณ","รายการเบิกจ่ายทั้งหมด");
 		$data["submenu"] = Finance_menu(2);
 		$this->template->load('template', 'disbursement_view', $data);
 	}
 	
 	public function form($approve_id = 0, $disbursement_id = 0)
 	{
-		$data["title"] = "แบบฟอร์มการเบิกจ่ายงบประมาณ";
-		$data["path"] = array("งานการเงิน","เบิกจ่ายงบประมาณ","จัดการการเบิกจ่ายงบประมาณ");
+		$data["title"] = "เพิ่มข้อมูลเบิกจ่าย";
+		$data["path"] = array("งานการเงิน","เบิกจ่ายงบประมาณ","เพิ่มข้อมูลเบิกจ่าย");
 		$data["submenu"] = Finance_menu(2);
 		
-		$data["app_id"] = $approve_id;
-		$data["dis_id"] = $disbursement_id;
+		$data["approve_id"] = $approve_id;
+		$data["disbursement_id"] = $disbursement_id;
 		$this->template->load('template', 'disbursement_form_view',$data);
 	}
 	
@@ -49,8 +50,8 @@ class Disbursement extends CI_Controller {
 		
 		 header('Content-type: application/json');
          echo json_encode($result);
-		 //print_r($result);
-	   	//$this->output->enable_profiler(TRUE);
+		// dump($result['rows']);
+	   //	$this->output->enable_profiler(TRUE);
 	}
 	
 
@@ -81,18 +82,30 @@ class Disbursement extends CI_Controller {
 	public function add()
 	{
 	   $data = array(
-	   		'approve_id' => $_REQUEST['id'],
+	   		'approve_id' => $_REQUEST['approveid'],
 	        'doc_number' => $_REQUEST['paydoc_number'],
 	        'file_number' => $_REQUEST['payfile_number'],
             'doc_date' => formatDateToMySql($_REQUEST['pay_date']),
         	'invoice_number' => $_REQUEST['invoice_number'],
-            'detail' => $_REQUEST['paydetail']);
+            'budget_main_id' => $this->session->userdata('budget_year_id'),
+            'mgt_plans_id' => $_REQUEST['ccplans'],
+            'mgt_product_id' => $_REQUEST['ccproduct'],
+            'costs_id' => $_REQUEST['txtcosts'],
+	        'costs_group_id' => $_REQUEST['ccgroup'],
+	        'costs_type_id' => $_REQUEST['cctype'],
+	        'costs_lists_id' => $_REQUEST['cclists'],
+	        'costs_sublist_id' => $_REQUEST['ccsublist']);
 
+      // print_r($_REQUEST);
+       
        $id = $this->disbursement_model->save($data);
 	   
-	   // Update Approve Status
-	   $this->approve_model->save(array('status' => 2),$_REQUEST['id']);
 	   
+       
+       // Update Approve Status
+	   // $this->approve_model->save(array('status' => 2),$_REQUEST['id']);
+	
+         
 	   // Add Payment
 	   if(isset($id)){
 		    $pid = 0;	
@@ -114,6 +127,7 @@ class Disbursement extends CI_Controller {
 	   else {
 		   echo json_encode(array('msg'=>'Some errors occured.'));
 	   }
+     
 	}
 	
 	
@@ -121,11 +135,19 @@ class Disbursement extends CI_Controller {
 	{
 	  if(isset($eid)){
 		  $data = array(
+	   		'approve_id' => $_REQUEST['approveid'],
 	        'doc_number' => $_REQUEST['paydoc_number'],
 	        'file_number' => $_REQUEST['payfile_number'],
             'doc_date' => formatDateToMySql($_REQUEST['pay_date']),
         	'invoice_number' => $_REQUEST['invoice_number'],
-            'detail' => $_REQUEST['paydetail']);
+            'budget_main_id' => $this->session->userdata('budget_year_id'),
+            'mgt_plans_id' => $_REQUEST['ccplans'],
+            'mgt_product_id' => $_REQUEST['ccproduct'],
+            'costs_id' => $_REQUEST['txtcosts'],
+	        'costs_group_id' => $_REQUEST['ccgroup'],
+	        'costs_type_id' => $_REQUEST['cctype'],
+	        'costs_lists_id' => $_REQUEST['cclists'],
+	        'costs_sublist_id' => $_REQUEST['ccsublist']);
 			 			
 	        $id = $this->disbursement_model->save($data,$eid);
 	      
@@ -174,11 +196,6 @@ class Disbursement extends CI_Controller {
 		
         $this->disbursement_model->delete($id);
 		
-		 // Update Approve Status
-		if(isset($_REQUEST['app_id'])){
-			$app_id = intval($_REQUEST['app_id']);
-	        $this->approve_model->save(array('status' => 1),$app_id);
-		}
 		echo json_encode(array('success'=>true));
 	  }
     }
