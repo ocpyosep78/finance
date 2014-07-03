@@ -20,7 +20,7 @@
 				      		</td>
 				      		<td>
 				      		     <label class="control-label" style="width: 80px;">คณะ</label>
-				      	     	  <input id="ccfaculty" name="ccfaculty" class="easyui-combobox" style="height:30px;width:200px;"  required="true"
+				      	     	  <input id="ccfaculty" name="ccfaculty" class="easyui-combobox" style="height:30px;width:200px;" 
 				                           data-options="url:'<?php echo base_url(); ?>faculty/combobox',
 				                    	   valueField:'code',
 				                           textField:'name',
@@ -36,12 +36,12 @@
 				      	<tr>
 				      	     <td colspan="2">
  				      	     	<label class="control-label" style="width: 80px;">วันที่</label>
-						          <input name="doc_date" class="easyui-datebox" required="true" style="height:30px;width: 133px;" data-options="formatter:myformatter,parser:myparser" >
+						          <input name="doc_date" class="easyui-datebox" style="height:30px;width: 133px;" data-options="formatter:myformatter,parser:myparser" >
 							    
 				      	     </td>
 					     <td colspan="2">
  				      	     	  <label class="control-label" style="width: 80px;">ภาควิชา</label>
-				      	     	  <input id="ccdepartment" name="ccdepartment" class="easyui-combobox" required="true"
+				      	     	  <input id="ccdepartment" name="ccdepartment" class="easyui-combobox"
 				     				       style="height:30px;width:200px;" 
 				     				       data-options="valueField:'id',textField:'name',panelHeight:'auto',
 				     				        onSelect: function(rec){
@@ -109,7 +109,7 @@
   <div class="row-fluid">
 		<form id="fm" class="form-horizontal ">
 	        <fieldset style="padding-top: 0">
-		         <legend style="font-size: 11pt">อ้างอิงเอกสารส่งเบิก</legend>
+		         <legend style="font-size: 11pt">อ้างอิงเอกสารต้นเรื่องส่งเบิก</legend>
 		         
 		           <input type="hidden" id="approveid" name="approveid">
 
@@ -161,7 +161,7 @@
                                   	<tr>
                                           <td>
                                     		 <label class="control-label" style="width: 80px;">วันที่เบิกจ่าย</label>
-						                         <input name="pay_date" class="easyui-datebox" style="height:30px;width: 150px;" data-options="formatter:myformatter,parser:myparser" required="true">
+						                         <input name="pay_date" class="easyui-datebox" style="height:30px;width: 150px;" data-options="formatter:myformatter,parser:myparser">
                                     	  </td>
                                          <td>
 				     			                 <label class="control-label" style="width: 160px;">เลขที่ใบส่งของ / ใบเสร็จ</label>
@@ -354,6 +354,7 @@ function checking() {
 function add(){
        $('#dlg').dialog('open').dialog('setTitle','เพิ่มข้อมูลใหม่');
        $('#fm_popup').form('clear');
+       $('#ccfaculty').combobox('select', '53');
        url = base_url+'approve/add';
 }
 

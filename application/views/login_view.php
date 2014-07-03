@@ -44,7 +44,7 @@
 	<div class="wrapper">
 		<h1><a href="index.html"><img src="<?php echo base_url('assets/img/logo-big.png');?>" alt="" class='retina-ready' width="59" height="49">TTM-FMIS</a></h1>
 		<div class="login-body">
-			<h2>PSU-Passport (เวอร์ชั่น 1.0.1)</h2>
+			<h2>PSU-Passport (เวอร์ชั่น 1.1.0)</h2>
 			<?php echo form_open('welcome/login'); ?>
 				<div class="email">
 					<input type="text" name='usr' placeholder="Username" class='input-block-level'>
@@ -63,16 +63,11 @@
 					
 				</div>
 			</form>
+                  
+					   <span style="color: green;font-weight: 900"> รายการและประวัติการอัพเดต >>></span>
+                        <a href="<?php echo base_url('assets/update_log.txt');?>" target="_blank">คลิกที่นี่</a>
+
 			<div class="forget">
-				<p>
-					<div><span style="color: green;font-weight: 900">***แจ้ง Update 18/04/2557 ***</span>
-						<ul>
-							<li>งานการเงิน: แสดงจำนวนเงินอนุมัติเมื่อเบิกจ่ายแล้ว</li>
-							<li>งานการเงิน: แก้ไขเปอร์เซนต์ยอดอนุมัติสะสมที่ถูกต้อง</li>
-						</ul>
-					</div>
-					</p>
-				
 				<a href="#"><span>ระบบบริหารงบประมาณเงินรายได้ คณะการแพทย์แผนไทย <br/>
 					  &copy;ลิขสิทธิ์ 2013-2014 โทรศัพท์.2716 
 				</span></a>

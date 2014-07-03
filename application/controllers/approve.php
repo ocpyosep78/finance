@@ -25,7 +25,7 @@ class Approve extends CI_Controller {
 		 $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 		 $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
 		 $sort = isset($_POST['sort']) ? strval($_POST['sort']) : 'id';  
-         $order = isset($_POST['order']) ? strval($_POST['order']) : 'asc'; 
+         $order = isset($_POST['order']) ? strval($_POST['order']) : 'desc'; 
 		 $offset = ($page-1)*$rows;
 		 
 		 $budget_main_ID = $this->session->userdata('budget_year_id');
@@ -118,10 +118,11 @@ class Approve extends CI_Controller {
 	
 	public function add()
 	{
-	   $data = array(
+        $doc_date = !empty($_REQUEST['doc_date']) ? formatDateToMySql($_REQUEST['doc_date']) : date('Y-m-d');
+	    $data = array(
 	        'doc_number' => $_REQUEST['doc_number'],
 	        'file_number' => $_REQUEST['file_number'],
-            'doc_date' => formatDateToMySql($_REQUEST['doc_date']),
+            'doc_date' => $doc_date,
             'faculty_code' => $_REQUEST['ccfaculty'],
             'department_id' => $_REQUEST['ccdepartment'],
             'division_id' => $_REQUEST['ccdivision'],
@@ -129,8 +130,8 @@ class Approve extends CI_Controller {
             'detail' => $_REQUEST['detail'],
             'budget_main_id' => $this->session->userdata('budget_year_id'),
             'amount' => $_REQUEST['amount']);
-		//print_r($data);
-        		
+	//	print_r($data);
+     
        $id = $this->approve_model->save($data);
 	   
 	   if(isset($id)){

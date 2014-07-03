@@ -35,7 +35,7 @@ class Disbursement extends CI_Controller {
 		 $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 		 $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
 		 $sort = isset($_POST['sort']) ? strval($_POST['sort']) : 'id';  
-         $order = isset($_POST['order']) ? strval($_POST['order']) : 'asc'; 
+         $order = isset($_POST['order']) ? strval($_POST['order']) : 'desc'; 
 		 $offset = ($page-1)*$rows;
 		 
 		 $budget_main_ID = $this->session->userdata('budget_year_id');
@@ -81,11 +81,13 @@ class Disbursement extends CI_Controller {
 	
 	public function add()
 	{
+       $pay_date = !empty($_REQUEST['pay_date']) ? formatDateToMySql($_REQUEST['pay_date']) : date('Y-m-d');
+       
 	   $data = array(
 	   		'approve_id' => $_REQUEST['approveid'],
 	        'doc_number' => $_REQUEST['paydoc_number'],
 	        'file_number' => $_REQUEST['payfile_number'],
-            'doc_date' => formatDateToMySql($_REQUEST['pay_date']),
+            'doc_date' => $pay_date,
         	'invoice_number' => $_REQUEST['invoice_number'],
             'budget_main_id' => $this->session->userdata('budget_year_id'),
             'mgt_plans_id' => $_REQUEST['ccplans'],

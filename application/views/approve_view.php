@@ -15,8 +15,9 @@
                         <th data-options="field:'doc_date',width:55" sortable="true">วันที่</th>
 						<th data-options="field:'doc_number',width:60" sortable="true">เลขที่ มอ.</th>
 						<th data-options="field:'file_number',width:30" sortable="true">ลำดับ</th>
-						<th data-options="field:'subject',width:250" sortable="true">เรื่อง</th>
-						<th data-options="field:'department',width:160" sortable="true">ภาควิชา/หน่วยงาน</th>
+						<th data-options="field:'subject',width:200" sortable="true">เรื่อง</th>
+                        <th data-options="field:'detail',width:100" sortable="true">รายละเอียด</th>
+						<th data-options="field:'department',width:140" sortable="true">ภาควิชา/หน่วยงาน</th>
 						<th data-options="field:'amount',width:120,align:'right'" formatter="formatCurrency" sortable="true">จำนวนเงินอนุมัติ</th>
 					
 					</tr>
@@ -74,7 +75,7 @@
 				      	<tr>
 				      	     <td colspan="2">
  				      	     	<label class="control-label" style="width: 80px;">วันที่</label>
-						          <input name="doc_date" class="easyui-datebox" required="true" style="height:30px;width: 133px;" data-options="formatter:myformatter,parser:myparser" >
+						          <input name="doc_date" class="easyui-datebox" style="height:30px;width: 133px;" data-options="formatter:myformatter,parser:myparser" >
 							    
 				      	     </td>
 					     <td colspan="2">
@@ -182,7 +183,9 @@
 					return $(this).form('validate');
 				},
 				success: function(result){
-					var result = eval('('+result+')');
+				  //  console.log(result);
+				   
+				    var result = eval('(' + result + ')');
 					if (result.success){
 						$('#dlg').dialog('close');		// close the dialog
 						$('#dg').datagrid('reload');	// reload the user data
