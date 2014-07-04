@@ -30,7 +30,18 @@ class Dashboard extends CI_Controller {
 		$this->template->load('template', 'dashboard_view',$data);
 	}
 	
-	public function get_pie1($budget_main_id)
+    public function get_balance($budget_main_id)
+	{
+		$data = $this->dashboard_model->total_chart($budget_main_id);
+		$balance = $data[0]["budget"]-$data[0]["payment"];
+	
+        header('Content-type: application/json');
+        echo json_encode($data);
+	}
+    
+    
+    
+    public function get_pie1($budget_main_id)
 	{
 		$data = $this->dashboard_model->total_chart($budget_main_id);
 		

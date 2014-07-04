@@ -16,9 +16,9 @@
 						<th data-options="field:'doc_number',width:60" sortable="true">เลขที่ มอ.</th>
 						<th data-options="field:'file_number',width:30" sortable="true">ลำดับ</th>
 						<th data-options="field:'subject',width:200" sortable="true">เรื่อง</th>
-                        <th data-options="field:'detail',width:100" sortable="true">รายละเอียด</th>
-						<th data-options="field:'department',width:140" sortable="true">ภาควิชา/หน่วยงาน</th>
-						<th data-options="field:'amount',width:120,align:'right'" formatter="formatCurrency" sortable="true">จำนวนเงินอนุมัติ</th>
+                        <th data-options="field:'detail',width:170" sortable="true">รายละเอียด</th>
+						<th data-options="field:'department',width:110" sortable="true">ภาควิชา/หน่วยงาน</th>
+						<th data-options="field:'amount',width:80,align:'right'" formatter="formatCurrency" sortable="true">จำนวนเงินอนุมัติ</th>
 					
 					</tr>
 				</thead>	

@@ -51,6 +51,9 @@
 	
 	<!-- jQuery easybar -->
 	<script src="<?php echo base_url('assets/js/jquery.progressbar.js');?>"></script>
+
+    <!--javascript Number Format -->
+	<script src="<?php echo base_url('assets/js/numeral.min.js');?>"></script>
 	
 	<!-- MyFunction -->
 	<script src="<?php echo base_url('assets/js/MyFunction.js');?>"></script>
@@ -84,10 +87,23 @@
 	<link href="<?php echo base_url('assets/jquery-easyui/themes/metro-blue/easyui.css');?>" rel="stylesheet" type="text/css" />
 	<link href="<?php echo base_url('assets/jquery-easyui/themes/icon.css');?>" rel="stylesheet" type="text/css" />
 	
+    <script type="text/javascript">
 
+        function check_balance() {
+            var total
+            var jqsonurl = '<?php echo base_url(); ?>' + 'dashboard/get_balance/' + <?php echo $this->session->userdata('budget_year_id') ?>;
+            $.getJSON(jqsonurl, function (data) {
+                $.each(data, function (index, val) {
+                        total = numeral(val.budget-val.payment).format('0,0.00');
+                        $('#status_balance').html(total);
+                        console.log(val.budget-val.payment);
+                    });
+                });
+        }
+    </script>
 
 </head>
-<body>
+<body onload="check_balance();">
 	
 <?php
 //print_r($path);
@@ -129,8 +145,9 @@
 							<li class='green'>
 								<i class="icon-money"></i>
 								<div class="details">
-									<span class="big"><?php echo number_format($this->session->userdata('budget_year_amount'),2); ?> บาท</span>
-									<span><?php echo $this->session->userdata('budget_year_title'); ?></span>
+									<span class="big">คงเหลือสุทธิ <a href="#" style="color:#fff;" id="status_balance"></a> บาท</span>
+                                    
+									<span><?php echo $this->session->userdata('budget_year_title')." (".number_format($this->session->userdata('budget_year_amount'),2)." บ.)"; ?></span>
 								</div>
 							</li>
 							<?php

@@ -125,6 +125,7 @@ function save(){
 			if (result.success){
 				$('#dlg').dialog('close');		// close the dialog
 				$('#dg').datagrid('reload');	// reload the user data
+				location.reload();
 			} else {
 				$.messager.show({
 					title: 'Error',

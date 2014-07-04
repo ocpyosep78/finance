@@ -93,7 +93,11 @@ class Budget_Main extends CI_Controller {
 			'status_id' => $_REQUEST['status']);
 	        $id = $this->budget_main_model->save($data,$eid);
 		    if(isset($id)){
-		   	  echo json_encode(array('success'=>true));
+                if ($id === $this->session->userdata('budget_year_id'))
+                {
+                     $this->session->set_userdata('budget_year_amount', $_REQUEST['amount']);
+                }
+              echo json_encode(array('success'=>true));
 		    }
 		    else {
 			   echo json_encode(array('msg'=>'Some errors occured.'));
