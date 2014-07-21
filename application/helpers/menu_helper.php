@@ -23,7 +23,7 @@ function Finance_menu($id)
 		   break;
 		case '2': $submenu = array("disbursement/form" => "เพิ่มข้อมูลเบิกจ่าย","disbursement" => "แสดงรายการเบิกจ่ายทั้งหมด");
 		   break;
-		case '3': $submenu = array("approve_report" => "สถิติการขออนุมัติ", "approve_report" => "สถิติการเบิกจ่าย");
+		case '3': $submenu = array("report_disbursement" => "รายงานการจ่ายจำแนกตามแผน");
 		   break;
 		default: $submenu = array("approve" => "ขออนุมัติใช้งบประมาณ","approve_report" => "รายงานภาพรวมการขออนุมัติ");
 		   break;

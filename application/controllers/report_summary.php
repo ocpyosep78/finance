@@ -96,7 +96,7 @@ class Report_Summary extends CI_Controller {
 				}
 				 
 				 // sum footer 
-				 $html .= '<tr style="background-color: #EEEEEE"><td><strong>ยอดเงินรวมทั้งหมด</strong></td>';
+				 $html .= '<tr style="background-color: #EEEEEE"><td><strong>รวมเงินทั้งหมด</strong></td>';
 				 $html .= '<td style="text-align: right">'.number_format($sum_amount,2).'</td>';
 				 $html .= '<td style="text-align: right">'.number_format($sum_approve,2).'</td>';
 				 $html .= '<td style="text-align: right">'.number_format($sum_payment,2).'</td>';

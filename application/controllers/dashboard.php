@@ -48,8 +48,8 @@ class Dashboard extends CI_Controller {
 		$useable = $data[0]["payment"];
 		$balance = $data[0]["budget"]-$data[0]["payment"];
 		
-		$arr = array(array("label" => "ไม่ใช้ (" . number_format($balance) ." บ.)",  "data" => $balance, "color" => "#4572A7"),
-		             array("label" => "ใช้ (" . number_format($useable) ." บ.)" ,  "data" => $useable, "color" => "#AA4643"));
+		$arr = array(array("label" => "เงินคงเหลือ (" . number_format($balance) ." บ.)",  "data" => $balance, "color" => "#4572A7"),
+		             array("label" => "ยอดใช้จ่าย (" . number_format($useable) ." บ.)" ,  "data" => $useable, "color" => "#AA4643"));
 		
 		return $arr;
 		

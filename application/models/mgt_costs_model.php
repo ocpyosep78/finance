@@ -127,8 +127,63 @@ class Mgt_Costs_model extends MY_Model{
 		             ->count_all_results();
 		return $result;
     }
+    
+    
+    // for controllers is report_disbursement_plan.php
+    function mgt_costs_level($product_ID)
+	{
+		$this->db->select('trn_mgt_costs.costs_id');
+        $this->db->select('sum(trn_mgt_costs.amount) AS amount',FALSE);
+		
+        $this->db->where('trn_mgt_costs.mgt_product_id =', $product_ID);
+        
+        $this->db->group_by('trn_mgt_costs.costs_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function mgt_costs_group_level($product_ID, $costs_ID)
+	{
+		$this->db->select('trn_mgt_costs.costs_group_id');
+        $this->db->select('sum(trn_mgt_costs.amount) AS amount',FALSE);
+      
+        $this->db->where('trn_mgt_costs.mgt_product_id =', $product_ID);
+        $this->db->where('trn_mgt_costs.costs_id =', $costs_ID);
+        
+        $this->db->group_by('trn_mgt_costs.costs_group_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function mgt_costs_type_level($product_ID, $costs_ID, $costs_group_ID)
+	{
+		$this->db->select('trn_mgt_costs.costs_type_id');
+        $this->db->select('sum(trn_mgt_costs.amount) AS amount',FALSE);
+        
+        $this->db->where('trn_mgt_costs.mgt_product_id =', $product_ID);
+        $this->db->where('trn_mgt_costs.costs_id =', $costs_ID);
+        $this->db->where('trn_mgt_costs.costs_group_id =', $costs_group_ID);
+        
+        $this->db->group_by('trn_mgt_costs.costs_type_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function mgt_costs_lists_level($product_ID, $costs_ID, $costs_group_ID, $costs_type_ID)
+	{
+		$this->db->select('trn_mgt_costs.costs_lists_id');
+        $this->db->select('sum(trn_mgt_costs.amount) AS amount',FALSE);
+        
+        $this->db->where('trn_mgt_costs.mgt_product_id =', $product_ID);
+        $this->db->where('trn_mgt_costs.costs_id =', $costs_ID);
+        $this->db->where('trn_mgt_costs.costs_group_id =', $costs_group_ID);
+        $this->db->where('trn_mgt_costs.costs_type_id =', $costs_type_ID);
+        
+        $this->db->group_by('trn_mgt_costs.costs_lists_id');
+		return $this->get();
+	}
 
 }
 
-/* End of file mgt_costsgroup_model.php */
-/* Location: ./application/models/mgt_costsgroup_model.php */
+/* End of file mgt_costs_model.php */
+/* Location: ./application/models/mgt_costs_model.php */

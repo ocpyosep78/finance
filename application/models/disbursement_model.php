@@ -61,6 +61,97 @@ class Disbursement_model extends MY_Model{
 		
         return $result;
     }
+    
+    // for controllers is report_disbursement_plan.php
+    function costs_level($budget_main_ID, $plans_ID, $product_ID, $start_date, $end_date)
+	{
+		$this->db->select('trn_disbursement.id, trn_disbursement.costs_id , mst_costs.name');
+        $this->db->select('sum(trn_payment.amount) AS payment',FALSE);
+		
+		$this->db->join('trn_payment', 'trn_payment.disbursement_id = trn_disbursement.id','LEFT OUTER');
+		$this->db->join('mst_costs', 'mst_costs.id = trn_disbursement.costs_id');
+        
+       
+		$this->db->where('trn_disbursement.budget_main_id =', $budget_main_ID);
+        
+        
+        $this->db->where('trn_disbursement.mgt_plans_id =', $plans_ID);
+        $this->db->where('trn_disbursement.mgt_product_id =', $product_ID);
+        
+        if(!empty($start_date) && !empty($end_date))
+            $this->db->where('trn_disbursement.doc_date BETWEEN "'.$start_date.'" AND "'.$end_date.'"');
+        
+        $this->db->group_by('trn_disbursement.costs_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function costs_group_level($budget_main_ID, $plans_ID, $product_ID, $costs_ID, $start_date, $end_date)
+	{
+		$this->db->select('trn_disbursement.costs_group_id, mst_costs_group.name');
+		$this->db->select('sum(trn_payment.amount) AS payment',FALSE);
+		
+		$this->db->join('trn_payment', 'trn_payment.disbursement_id = trn_disbursement.id','LEFT OUTER');
+		$this->db->join('mst_costs_group', 'mst_costs_group.id = trn_disbursement.costs_group_id');
+        
+		$this->db->where('trn_disbursement.budget_main_id =', $budget_main_ID);
+        $this->db->where('trn_disbursement.mgt_plans_id =', $plans_ID);
+        $this->db->where('trn_disbursement.mgt_product_id =', $product_ID);
+        $this->db->where('trn_disbursement.costs_id =', $costs_ID);
+        
+        if(!empty($start_date) && !empty($end_date))
+            $this->db->where('trn_disbursement.doc_date BETWEEN "'.$start_date.'" AND "'.$end_date.'"');
+		
+        $this->db->group_by('trn_disbursement.costs_group_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function costs_type_level($budget_main_ID, $plans_ID, $product_ID, $costs_ID, $costs_group_ID, $start_date, $end_date)
+	{
+		$this->db->select('trn_disbursement.costs_type_id, mst_costs_type.name');
+		$this->db->select('sum(trn_payment.amount) AS payment',FALSE);
+		
+		$this->db->join('trn_payment', 'trn_payment.disbursement_id = trn_disbursement.id','LEFT OUTER');
+		$this->db->join('mst_costs_type', 'mst_costs_type.id = trn_disbursement.costs_type_id');
+        
+		$this->db->where('trn_disbursement.budget_main_id =', $budget_main_ID);
+        $this->db->where('trn_disbursement.mgt_plans_id =', $plans_ID);
+        $this->db->where('trn_disbursement.mgt_product_id =', $product_ID);
+        $this->db->where('trn_disbursement.costs_id =', $costs_ID);
+        $this->db->where('trn_disbursement.costs_group_id =', $costs_group_ID);
+        
+        if(!empty($start_date) && !empty($end_date))
+            $this->db->where('trn_disbursement.doc_date BETWEEN "'.$start_date.'" AND "'.$end_date.'"');
+		
+        $this->db->group_by('trn_disbursement.costs_type_id');
+		return $this->get();
+	}
+    
+    // for controllers is report_disbursement_plan.php
+    function costs_lists_level($budget_main_ID, $plans_ID, $product_ID, $costs_ID, $costs_group_ID, $costs_type_ID,  $start_date, $end_date)
+	{
+		$this->db->select('trn_disbursement.costs_lists_id');
+        $this->db->select("IF(trn_disbursement.costs_sublist_id = 0, mst_costs_lists.name, CONCAT(mst_costs_lists.name,' / ', mst_costs_sublist.name)) AS name",FALSE);
+		$this->db->select('sum(trn_payment.amount) AS payment',FALSE);
+		
+		$this->db->join('trn_payment', 'trn_payment.disbursement_id = trn_disbursement.id','LEFT OUTER');
+		$this->db->join('mst_costs_lists','mst_costs_lists.id = trn_disbursement.costs_lists_id');
+		$this->db->join('mst_costs_sublist','mst_costs_sublist.id = trn_disbursement.costs_sublist_id',"LEFT OUTER");
+        
+		$this->db->where('trn_disbursement.budget_main_id =', $budget_main_ID);
+        $this->db->where('trn_disbursement.mgt_plans_id =', $plans_ID);
+        $this->db->where('trn_disbursement.mgt_product_id =', $product_ID);
+        $this->db->where('trn_disbursement.costs_id =', $costs_ID);
+        $this->db->where('trn_disbursement.costs_group_id =', $costs_group_ID);
+        $this->db->where('trn_disbursement.costs_type_id =', $costs_type_ID);
+        
+        if(!empty($start_date) && !empty($end_date))
+            $this->db->where('trn_disbursement.doc_date BETWEEN "'.$start_date.'" AND "'.$end_date.'"');
+		
+        $this->db->group_by('trn_disbursement.costs_lists_id');
+		return $this->get();
+	}
 	
 }
 

@@ -41,7 +41,7 @@
 							<a href="<?php echo base_url();?>disbursement/form">เบิกจ่ายงบประมาณ</a>
 						</li>
 						<li>
-							<a href="#">รายงาน</a>
+							<a href="<?php echo base_url();?>report_disbursement_plan">รายงาน</a>
 						</li>
 					</ul>
 				</li>

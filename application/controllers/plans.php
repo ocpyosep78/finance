@@ -45,7 +45,7 @@ class Plans extends CI_Controller {
 		header('Content-type: application/json');
         echo json_encode($data);
 	}
-	
+    
 	public function add()
 	{
 	   $data = array(
